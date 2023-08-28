@@ -21,6 +21,7 @@
             v-for="searchResults in mapboxSearchResults"
             :key="searchResults.id"
             class="py-2 cursor-pointer"
+            @click="previewCity(searchResults)"
           >
             {{ searchResults.place_name }}
           </li>
@@ -33,6 +34,23 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const previewCity = (searchResults) => {
+  console.log(searchResults);
+  const [city, state] = searchResults.place_name.split(",");
+  router.push({
+    name: "cityView",
+    params: { state: state.replaceAll(" ", ""), city: city },
+    query: {
+      lat: searchResults.geometry.coordinates[1],
+      lng: searchResults.geometry.coordinates[0],
+      preview: true,
+    },
+  });
+};
 
 const mapboxAPIKey =
   "pk.eyJ1Ijoia2VjaGUiLCJhIjoiY2xsbmYzM2VyMDA1NzNlbzRmczJyMTU3NyJ9.ucAR0xxEzW9IHdO4Dwsgmg";
