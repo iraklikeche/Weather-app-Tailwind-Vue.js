@@ -136,6 +136,10 @@ const getWeatherData = async () => {
       const utc = hour.dt * 1000 + localOffset;
       hour.currentTime = utc + 1000 * weatherData.data.timezone_offset;
     });
+
+    // Flicker Delay for animation
+    await new Promise((res) => setTimeout(res, 1000));
+
     return weatherData.data;
   } catch (err) {
     console.log(err);
@@ -146,15 +150,7 @@ const weatherData = await getWeatherData();
 console.log(weatherData);
 
 const router = useRouter();
-// const removeCity = () => {
-//   const cities = JSON.parse(localStorage.getItem("savedCities"));
-//   // This will create new array of updatedCities and update it.
-//   const updatedCities = cities.filter((city) => city.id !== route.query.id);
-//   localStorage.setItem("savedCities", JSON.stringify(updatedCities));
-//   router.push({
-//     name: "home",
-//   });
-// };
+
 const removeCity = () => {
   const citiesJson = localStorage.getItem("savedCities");
 
