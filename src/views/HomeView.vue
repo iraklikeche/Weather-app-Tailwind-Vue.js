@@ -1,16 +1,16 @@
 <template>
   <main class="container text-white">
-    <div class="pt-4 mb-8 relative">
+    <div class="relative mb-8 pt-4">
       <input
         v-model="searchQuery"
         @input="getSearchResults"
         type="text"
         placeholder="Search for a city or state"
-        class="py-2 px-1 w-full bg-transparent border-b focus:border-weather-secondary focus:outline-none focus:shadow-[0px_1px_0_0_#004E71]"
+        class="w-full border-b bg-transparent px-1 py-2 focus:border-weather-secondary focus:shadow-[0px_1px_0_0_#004E71] focus:outline-none"
       />
       <ul
         v-if="mapboxSearchResults"
-        class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-1 top-[66px]"
+        class="absolute top-[66px] w-full bg-weather-secondary px-1 py-2 text-white shadow-md"
       >
         <p v-if="searchError">Sorry, something went wrong, please try.</p>
         <p v-if="mapboxSearchResults.length === 0">
@@ -20,7 +20,7 @@
           <li
             v-for="searchResults in mapboxSearchResults"
             :key="searchResults.id"
-            class="py-2 cursor-pointer"
+            class="cursor-pointer py-2"
             @click="previewCity(searchResults)"
           >
             {{ searchResults.place_name }}
@@ -34,6 +34,7 @@
         <template #fallback> <CityCardSkeleton /> </template>
       </Suspense>
     </div>
+    <div class="flex flex-col gap-4"></div>
   </main>
 </template>
 
@@ -73,7 +74,7 @@ const getSearchResults = () => {
     if (searchQuery.value !== "") {
       try {
         const result = await axios.get(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery.value}.json?access_token=${mapboxAPIKey}&types=place`
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery.value}.json?access_token=${mapboxAPIKey}&types=place`,
         );
         mapboxSearchResults.value = result.data.features;
         console.log(mapboxSearchResults.value);
